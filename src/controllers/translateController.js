@@ -5,8 +5,6 @@ const TranslateService = require("../services/translateService.js");
 class TranslateController {
   constructor() {
     this.router = express.Router();
-    this.response = express.response;
-    this.response.contentType("application/json");
     this.router.post("/translateMessage", this.translateMessage.bind(this));
     this.translateService = TranslateService.getInstance();
   }
@@ -22,14 +20,15 @@ class TranslateController {
       console.log("after translation", req.body);
       req.body.message.text = translation;
       console.log("again", req.body);
-      res = req.body;
+      const response = req.body;
       //   express.response.sendStatus(200).json({ res });
-      this.response.sendStatus(200);
-      return;
+      //   res.sendStatus(200);
+      res.status(200).json(response);
+      return res;
     } catch (error) {
       console.error(error);
-      res.sendStatus(500);
-      return;
+      res.status(500);
+      return res;
     }
   }
 }
